@@ -9,7 +9,7 @@ function RouteComponent() {
     const { path } = Route.useParams()
 
     return (
-        <main className="container items-center flex flex-col mx-auto my-auto p-4 md:p-6">
+        <main className="container items-center flex flex-col">
             <AuthView path={path} />
         </main>
     )

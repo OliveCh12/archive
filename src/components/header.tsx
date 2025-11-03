@@ -1,30 +1,22 @@
-import { GitHubIcon, UserButton } from "@daveyplate/better-auth-ui"
+import { authClient } from "@/lib/auth-client"
+import { Github, Home, LogOut, User } from "lucide-react"
 import { Link } from "@tanstack/react-router"
 import { ModeToggle } from "./mode-toggle"
 import { Button } from "./ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 
 export function Header() {
     return (
         <header className="sticky top-0 z-50 flex h-12 justify-between border-b bg-background/60 px-safe-or-4 backdrop-blur md:h-14 md:px-safe-or-6">
             <Link to="/" className="flex items-center gap-2">
-                <svg
-                    aria-label="Better-Auth Logo"
-                    className="size-5"
-                    fill="none"
-                    height="45"
-                    viewBox="0 0 60 45"
-                    width="60"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <title>Better Auth UI Logo</title>
-                    <path
-                        className="fill-black dark:fill-white"
-                        clipRule="evenodd"
-                        d="M0 0H15V45H0V0ZM45 0H60V45H45V0ZM20 0H40V15H20V0ZM20 30H40V45H20V30Z"
-                        fillRule="evenodd"
-                    />
-                </svg>
-                BETTER-AUTH. STARTER
+                <Home className="size-5" />
+                PHOENIX
             </Link>
 
             <div className="flex items-center gap-2">
@@ -36,15 +28,36 @@ export function Header() {
                     <Button
                         variant="outline"
                         size="icon"
-                        className="size-8 rounded-full"
                     >
-                        <GitHubIcon />
+                        <Github />
                     </Button>
                 </a>
 
                 <ModeToggle />
 
-                <UserButton size="icon" />
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                        >
+                            <User />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                            <Link to="/account/$path" params={{ path: "profile" }}>
+                                <User className="mr-2 h-4 w-4" />
+                                Profile
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => authClient.signOut()}>
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Sign out
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
         </header>
     )
