@@ -1,16 +1,11 @@
-import { betterAuth } from "better-auth"
-import { drizzleAdapter } from "better-auth/adapters/drizzle"
-
-import { db } from "@/database/db"
-import * as schema from "@/database/schema"
+import { betterAuth } from "better-auth";
+import { anonymous } from "better-auth/plugins";
+import { DatabaseSync } from "node:sqlite";
 
 export const auth = betterAuth({
-    database: drizzleAdapter(db, {
-        provider: "pg",
-        usePlural: true,
-        schema
-    }),
-    emailAndPassword: {
-        enabled: true
-    }
-})
+  database: new DatabaseSync("database.sqlite"),
+  emailAndPassword: {
+    enabled: true,
+  },
+  plugins: [anonymous()],
+});

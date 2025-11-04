@@ -9,7 +9,7 @@ function RouteComponent() {
     const { path } = Route.useParams()
 
     return (
-        <main className="container mx-auto p-4 md:p-6">
+        <div>
             <AccountView
                 classNames={{
                     sidebar: {
@@ -18,6 +18,6 @@ function RouteComponent() {
                 }}
                 path={path}
             />
-        </main>
+        </div>
     )
 }

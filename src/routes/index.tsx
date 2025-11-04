@@ -2,32 +2,51 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CheckCircle, Users, Zap, Shield } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: IndexPage });
-  const images = [
-    "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1587",
-    "https://images.unsplash.com/photo-1562519990-50eb51e282b2?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1632",
-    "https://plus.unsplash.com/premium_photo-1680206587718-19b00a9be6b5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=688",
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470",
-  ];
 
+// Feature data for better organization
+const features = [
+  {
+    icon: <Zap className="h-5 w-5" />,
+    title: "Lightning Fast",
+    description: "Optimized performance for seamless task management",
+  },
+  {
+    icon: <Users className="h-5 w-5" />,
+    title: "Team Collaboration",
+    description: "Work together efficiently, no matter where you are",
+  },
+  {
+    icon: <Shield className="h-5 w-5" />,
+    title: "Secure & Reliable",
+    description: "Enterprise-grade security for your peace of mind",
+  },
+];
 
+// Gradient colors for the bento grid
+const gradientColors = [
+  "bg-gradient-to-br from-primary/20 to-primary/40",
+  "bg-gradient-to-br from-primary/30 to-primary/50",
+  "bg-gradient-to-br from-primary/25 to-primary/45",
+  "bg-gradient-to-br from-primary/35 to-primary/55",
+];
 
 function IndexPage() {
-
   return (
     <div className="h-full text-foreground">
       {/* Hero Section */}
-      <section className="relative px-4 py-16 md:py-24 lg:py-32 h-full">
+      <section className="relative px-4 py-16 md:py-24 lg:py-32 h-full overflow-hidden">
         <div className="max-w-7xl mx-auto h-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
             {/* Left Column - Content */}
-            <div className="space-y-8">
+            <div className="space-y-8 z-10">
               <Badge variant="secondary" className="w-fit">
                 We've just raised $2.6M in funding →
               </Badge>
 
-              <h1 className="text-2xl md:text-4xl lg:text-4xl font-bold leading-tight">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
                 Effortless task management for{" "}
                 <span className="text-primary">Remote Teams</span>
               </h1>
@@ -38,10 +57,10 @@ function IndexPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 max-w-md">
-                <Button size="lg" className="sm:w-auto">
+                <Button size="lg" className="sm:w-auto shadow-md hover:shadow-lg transition-shadow">
                   Login LBP
                 </Button>
-                <Button size="lg" variant={"secondary"} className="sm:w-auto">
+                <Button size="lg" variant={"secondary"} className="sm:w-auto shadow-md hover:shadow-lg transition-shadow">
                   Login SFIL
                 </Button>
               </div>
@@ -52,15 +71,28 @@ function IndexPage() {
                   Book a demo today.
                 </Link>
               </p>
+
+              {/* Features List */}
+              <div className="pt-4 space-y-3">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="text-primary">{feature.icon}</div>
+                    <div>
+                      <h3 className="font-medium">{feature.title}</h3>
+                      <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Bento Image, use no image. , but block with gradient with color primary */}
+            {/* Right Column - Bento Grid with Gradients */}
             <div className="relative">
               <div className="grid grid-cols-3 grid-rows-3 gap-4 h-96">
-                {images.map((image, index) => (
+                {gradientColors.map((gradient, index) => (
                   <div
                     key={index}
-                    className={`rounded-lg shadow-lg overflow-hidden ${
+                    className={`rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 ${
                       index === 0
                         ? "col-span-2 row-span-2"
                         : index === 1
@@ -72,20 +104,14 @@ function IndexPage() {
                         : "col-span-2"
                     }`}
                   >
-                    <img
-                      src={image}
-                      alt={`Bento Image ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+                    <div className={`w-full h-full ${gradient} flex items-center justify-center`}>
+                      <div className="text-center p-4">
+                        <CheckCircle className="h-8 w-8 mx-auto mb-2 text-primary" />
+                        <p className="text-sm font-medium">Feature {index + 1}</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
-
-                {/* Gradient Blocks
-                <div className="col-span-2 row-span-2 bg-linear-to-br from-primary to-primary/50 rounded-lg shadow-lg"></div>
-                <div className="bg-linear-to-tr from-primary/80 to-primary/30 rounded-lg shadow-lg"></div>
-                <div className="row-span-2 bg-linear-to-bl from-primary/60 to-primary/40 rounded-lg shadow-lg"></div>
-                <div className="bg-linear-to-r from-primary/70 to-primary/20 rounded-lg shadow-lg"></div>
-                <div className="col-span-2 bg-linear-to-tl from-primary/50 to-primary/60 rounded-lg shadow-lg"></div> */}
               </div>
             </div>
           </div>

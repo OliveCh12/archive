@@ -8,7 +8,7 @@ import appCss from "../styles.css?url"
 export const Route = createRootRoute({
     head: () => ({
         meta: [
-            { title: "Better Auth Starter" },
+            { title: "Phoenix" },
             { charSet: "utf-8" },
             {
                 name: "viewport",
