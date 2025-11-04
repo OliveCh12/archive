@@ -4,6 +4,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Users, Zap, Shield } from "lucide-react";
 
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
+
 export const Route = createFileRoute("/")({ component: IndexPage });
 
 // Feature data for better organization
@@ -57,17 +66,27 @@ function IndexPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 max-w-md">
-                <Button size="lg" className="sm:w-auto shadow-md hover:shadow-lg transition-shadow">
+                <Button
+                  size="lg"
+                  className="sm:w-auto shadow-md hover:shadow-lg transition-shadow"
+                >
                   Login LBP
                 </Button>
-                <Button size="lg" variant={"secondary"} className="sm:w-auto shadow-md hover:shadow-lg transition-shadow">
+                <Button
+                  size="lg"
+                  variant={"secondary"}
+                  className="sm:w-auto shadow-md hover:shadow-lg transition-shadow"
+                >
                   Login SFIL
                 </Button>
               </div>
 
               <p className="text-sm text-muted-foreground">
                 Sign up and get 1 week free.{" "}
-                <Link to="/login" className="text-primary hover:underline">
+                <Link
+                  to="/account/$path"
+                  className="text-primary hover:underline"
+                >
                   Book a demo today.
                 </Link>
               </p>
@@ -75,13 +94,25 @@ function IndexPage() {
               {/* Features List */}
               <div className="pt-4 space-y-3">
                 {features.map((feature) => (
-                  <div key={feature.title} className="flex items-center gap-3">
-                    <div className="text-primary">{feature.icon}</div>
-                    <div>
-                      <h3 className="font-medium">{feature.title}</h3>
-                      <p className="text-sm text-muted-foreground">{feature.description}</p>
-                    </div>
-                  </div>
+                  <Item
+                    key={feature.title}
+                    className="flex items-center gap-3"
+                    variant={"outline"}
+                  >
+                    <ItemMedia className="text-primary">
+                      {feature.icon}
+                    </ItemMedia>
+                    <ItemContent>
+                      <div className="flex flex-col gap-1">
+                        <ItemTitle className="font-medium">
+                          {feature.title}
+                        </ItemTitle>
+                        <ItemDescription className="text-sm text-muted-foreground">
+                          {feature.description}
+                        </ItemDescription>
+                      </div>
+                    </ItemContent>
+                  </Item>
                 ))}
               </div>
             </div>
@@ -104,10 +135,14 @@ function IndexPage() {
                         : "col-span-2"
                     }`}
                   >
-                    <div className={`w-full h-full ${gradient} flex items-center justify-center`}>
+                    <div
+                      className={`w-full h-full ${gradient} flex items-center justify-center`}
+                    >
                       <div className="text-center p-4">
                         <CheckCircle className="h-8 w-8 mx-auto mb-2 text-primary" />
-                        <p className="text-sm font-medium">Feature {index + 1}</p>
+                        <p className="text-sm font-medium">
+                          Feature {index + 1}
+                        </p>
                       </div>
                     </div>
                   </div>
