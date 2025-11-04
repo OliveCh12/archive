@@ -9,8 +9,8 @@ function RouteComponent() {
     const { path } = Route.useParams()
 
     return (
-        <main className="container items-center flex flex-col">
+        <div className="flex justify-center items-center h-full w-full">
             <AuthView path={path} />
-        </main>
+        </div>
     )
 }
