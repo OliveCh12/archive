@@ -46,7 +46,7 @@ function IndexPage() {
                 We've just raised $2.6M in funding →
               </Badge>
 
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
                 Effortless task management for{" "}
                 <span className="text-primary">Remote Teams</span>
               </h1>
