@@ -74,8 +74,8 @@ function IndexPage() {
 
               {/* Features List */}
               <div className="pt-4 space-y-3">
-                {features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-3">
+                {features.map((feature) => (
+                  <div key={feature.title} className="flex items-center gap-3">
                     <div className="text-primary">{feature.icon}</div>
                     <div>
                       <h3 className="font-medium">{feature.title}</h3>
@@ -91,7 +91,7 @@ function IndexPage() {
               <div className="grid grid-cols-3 grid-rows-3 gap-4 h-96">
                 {gradientColors.map((gradient, index) => (
                   <div
-                    key={index}
+                    key={gradient}
                     className={`rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 ${
                       index === 0
                         ? "col-span-2 row-span-2"

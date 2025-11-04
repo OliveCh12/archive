@@ -30,5 +30,13 @@
             "semicolons": "asNeeded",
             "trailingCommas": "none"
         }
-    }
+    },
+    "overrides": [
+        {
+            "includes": ["src/components/ui/**"],
+            "linter": {
+                "enabled": false
+            }
+        }
+    ]
 }
