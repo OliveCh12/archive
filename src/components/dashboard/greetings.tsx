@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 
@@ -12,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface NameParts {
   firstName: string | null;
@@ -52,7 +54,16 @@ async function fetchSession() {
   return data ?? null;
 }
 
+const FILTER_OPTIONS = [
+  { value: "latest", label: "Dernières offres" },
+  { value: "valid", label: "Montages en cours de validité" },
+  { value: "review", label: "Montages à contrôler" },
+  { value: "local", label: "Montages de ma direction locale" },
+  { value: "pending", label: "Montages en attente de contrôle" },
+];
+
 export function Greetings() {
+  const [activeFilter, setActiveFilter] = useState<string>(FILTER_OPTIONS[0].value);
   const {
     data: session,
     isPending,
@@ -71,15 +82,22 @@ export function Greetings() {
 
   if (isPending) {
     return (
-      <Card className="border-border shadow-sm">
-        <CardHeader>
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="mt-2 h-4 w-64" />
+      <Card>
+        <CardHeader className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-4 w-64" />
+              <Skeleton className="h-4 w-40" />
+            </div>
+            <Skeleton className="h-10 w-40" />
+          </div>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <Skeleton className="h-4 w-28" />
-          <Skeleton className="h-4 w-56" />
-          <Skeleton className="h-4 w-44" />
+        <Separator />
+        <CardContent className="flex flex-wrap gap-2">
+          {FILTER_OPTIONS.map((option) => (
+            <Skeleton key={option.value} className="h-10 w-40" />
+          ))}
         </CardContent>
       </Card>
     );
@@ -87,17 +105,17 @@ export function Greetings() {
 
   if (isError) {
     return (
-      <Card className="border-destructive/40 shadow-sm">
-        <CardHeader>
+      <Card>
+        <CardHeader className="flex flex-col gap-2">
           <CardTitle>We could not load your profile</CardTitle>
           <CardDescription>
             {error instanceof Error ? error.message : "Please try again."}
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex items-center justify-between gap-4">
-          <span className="text-sm text-muted-foreground">
+        <CardContent className="flex flex-wrap items-center gap-3 justify-between">
+          <CardDescription className="flex-1">
             The request failed or timed out.
-          </span>
+          </CardDescription>
           <Button variant="outline" size="sm" onClick={() => refetch()}>
             Retry
           </Button>
@@ -108,17 +126,12 @@ export function Greetings() {
 
   if (!user) {
     return (
-      <Card className="border-border shadow-sm">
-        <CardHeader>
+      <Card>
+        <CardHeader className="flex flex-col gap-2">
           <CardTitle>Welcome</CardTitle>
           <CardDescription>Sign in to unlock your dashboard.</CardDescription>
         </CardHeader>
-        <CardContent className="flex items-center justify-between gap-4">
-          <div>
-            <p className="text-sm text-muted-foreground">
-              We could not find an active session.
-            </p>
-          </div>
+        <CardContent className="flex justify-end">
           <Button asChild>
             <Link to="/auth/$path" params={{ path: "sign-in" }}>
               Sign in
@@ -134,38 +147,37 @@ export function Greetings() {
   const fullName = user.name ?? `${firstName}${lastName ? ` ${lastName}` : ""}`;
 
   return (
-    <Card className="border-border shadow-sm">
-      <CardHeader>
-        <CardTitle>Hello, {firstName}</CardTitle>
-        <CardDescription>
-          Here is a quick summary of your profile details.
-        </CardDescription>
+    <Card>
+      <CardHeader className="flex flex-col gap-4">
+        <div className="flex w-full flex-col lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex flex-col gap-1">
+            <CardTitle className="text-primary">{fullName}</CardTitle>
+            <CardDescription>{user.email ?? "Adresse inconnue"}</CardDescription>
+          </div>
+          <Button asChild size="lg" className="self-start lg:self-center">
+            <Link to="/dashboard">Nouvelle Offre</Link>
+          </Button>
+        </div>
       </CardHeader>
-      <CardContent className="space-y-2 text-sm">
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Full name</span>
-          <span className="font-medium">{fullName}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">First name</span>
-          <span className="font-medium">{firstName}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Last name</span>
-          <span className="font-medium">
-            {lastName ?? "Not provided"}
-          </span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Email</span>
-          <span className="font-medium">{user.email ?? "Not provided"}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">Anonymous</span>
-          <span className="font-medium">
-            {user.isAnonymous ? "Yes" : "No"}
-          </span>
-        </div>
+      <Separator />
+      <CardContent>
+        <ToggleGroup
+          type="single"
+          value={activeFilter}
+          onValueChange={(value) => {
+            if (value) {
+              setActiveFilter(value);
+            }
+          }}
+          className="flex flex-wrap gap-2"
+          aria-label="Filtres des offres"
+        >
+          {FILTER_OPTIONS.map((filter) => (
+            <ToggleGroupItem key={filter.value} value={filter.value}>
+              {filter.label}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
       </CardContent>
     </Card>
   );
