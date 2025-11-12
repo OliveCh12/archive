@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DashboardPathRouteImport } from './routes/dashboard/$path'
 import { Route as AuthPathRouteImport } from './routes/auth/$path'
 import { Route as AccountPathRouteImport } from './routes/account/$path'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -18,11 +17,6 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardPathRoute = DashboardPathRouteImport.update({
-  id: '/dashboard/$path',
-  path: '/dashboard/$path',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthPathRoute = AuthPathRouteImport.update({
@@ -45,14 +39,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account/$path': typeof AccountPathRoute
   '/auth/$path': typeof AuthPathRoute
-  '/dashboard/$path': typeof DashboardPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account/$path': typeof AccountPathRoute
   '/auth/$path': typeof AuthPathRoute
-  '/dashboard/$path': typeof DashboardPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -60,38 +52,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account/$path': typeof AccountPathRoute
   '/auth/$path': typeof AuthPathRoute
-  '/dashboard/$path': typeof DashboardPathRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/account/$path'
-    | '/auth/$path'
-    | '/dashboard/$path'
-    | '/api/auth/$'
+  fullPaths: '/' | '/account/$path' | '/auth/$path' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/account/$path'
-    | '/auth/$path'
-    | '/dashboard/$path'
-    | '/api/auth/$'
-  id:
-    | '__root__'
-    | '/'
-    | '/account/$path'
-    | '/auth/$path'
-    | '/dashboard/$path'
-    | '/api/auth/$'
+  to: '/' | '/account/$path' | '/auth/$path' | '/api/auth/$'
+  id: '__root__' | '/' | '/account/$path' | '/auth/$path' | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountPathRoute: typeof AccountPathRoute
   AuthPathRoute: typeof AuthPathRoute
-  DashboardPathRoute: typeof DashboardPathRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -102,13 +76,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/$path': {
-      id: '/dashboard/$path'
-      path: '/dashboard/$path'
-      fullPath: '/dashboard/$path'
-      preLoaderRoute: typeof DashboardPathRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/$path': {
@@ -139,7 +106,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountPathRoute: AccountPathRoute,
   AuthPathRoute: AuthPathRoute,
-  DashboardPathRoute: DashboardPathRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

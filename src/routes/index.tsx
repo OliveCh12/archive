@@ -2,37 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Users, Zap, Shield } from "lucide-react";
-
-import {
-  Item,
-  ItemActions,
-  ItemContent,
-  ItemDescription,
-  ItemMedia,
-  ItemTitle,
-} from "@/components/ui/item";
+import { CheckCircle } from "lucide-react";
 
 export const Route = createFileRoute("/")({ component: IndexPage });
-
-// Feature data for better organization
-const features = [
-  {
-    icon: <Zap className="h-5 w-5" />,
-    title: "Lightning Fast",
-    description: "Optimized performance for seamless task management",
-  },
-  {
-    icon: <Users className="h-5 w-5" />,
-    title: "Team Collaboration",
-    description: "Work together efficiently, no matter where you are",
-  },
-  {
-    icon: <Shield className="h-5 w-5" />,
-    title: "Secure & Reliable",
-    description: "Enterprise-grade security for your peace of mind",
-  },
-];
 
 // Gradient colors for the bento grid
 const gradientColors = [
@@ -90,31 +62,6 @@ function IndexPage() {
                   Book a demo today.
                 </Link>
               </p>
-
-              {/* Features List */}
-              <div className="pt-4 space-y-3">
-                {features.map((feature) => (
-                  <Item
-                    key={feature.title}
-                    className="flex items-center gap-3"
-                    variant={"outline"}
-                  >
-                    <ItemMedia className="text-primary">
-                      {feature.icon}
-                    </ItemMedia>
-                    <ItemContent>
-                      <div className="flex flex-col gap-1">
-                        <ItemTitle className="font-medium">
-                          {feature.title}
-                        </ItemTitle>
-                        <ItemDescription className="text-sm text-muted-foreground">
-                          {feature.description}
-                        </ItemDescription>
-                      </div>
-                    </ItemContent>
-                  </Item>
-                ))}
-              </div>
             </div>
 
             {/* Right Column - Bento Grid with Gradients */}
