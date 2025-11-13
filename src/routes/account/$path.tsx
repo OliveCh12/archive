@@ -9,7 +9,6 @@ function RouteComponent() {
     const { path } = Route.useParams()
 
     return (
-        <div>
             <AccountView
                 classNames={{
                     sidebar: {
@@ -18,6 +17,5 @@ function RouteComponent() {
                 }}
                 path={path}
             />
-        </div>
     )
 }

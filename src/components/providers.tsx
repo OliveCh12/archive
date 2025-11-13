@@ -1,4 +1,5 @@
 import { AuthUIProvider } from "@daveyplate/better-auth-ui"
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Link, useRouter } from "@tanstack/react-router"
 import { ThemeProvider } from "next-themes"
@@ -21,12 +22,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <QueryClientProvider client={queryClient}>
                 <AuthUIProvider
                     authClient={authClient}
+                    
                     navigate={(href) => navigate({ href })}
                     replace={(href) => navigate({ href, replace: true })}
                     Link={({ href, ...props }) => <Link to={href} {...props} />}
                 >
                     {children}
-
                     <MetaTheme />
                 </AuthUIProvider>
             </QueryClientProvider>

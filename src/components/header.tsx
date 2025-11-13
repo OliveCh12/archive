@@ -1,4 +1,4 @@
-import { LogOut, User, Loader2, Flame, LogIn } from "lucide-react";
+import { LogOut, User, Loader2, Flame, LogIn, Home } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
@@ -10,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { authClient } from "@/lib/auth-client";
+import { UserButton } from "@daveyplate/better-auth-ui";
+
 import { useRouter } from "@tanstack/react-router";
 import { useState, useCallback, useMemo } from "react";
 import { toast } from "sonner";
@@ -44,82 +46,7 @@ const UserInfo = ({ user }: { user: UserSession["user"] }) => (
   </div>
 );
 
-// Extracted sign out button component
-const SignOutButton = ({
-  isSigningOut,
-  onSignOut,
-}: {
-  isSigningOut: boolean;
-  onSignOut: () => void;
-}) => (
-  <DropdownMenuItem
-    className={cn(
-      "flex items-center cursor-pointer text-red-600 focus:text-red-600",
-      isSigningOut && "opacity-70 cursor-not-allowed"
-    )}
-    onSelect={(e) => {
-      e.preventDefault();
-      if (!isSigningOut) onSignOut();
-    }}
-    disabled={isSigningOut}
-  >
-    {isSigningOut ? (
-      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-    ) : (
-      <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
-    )}
-    <span>{isSigningOut ? "Signing out..." : "Sign out"}</span>
-  </DropdownMenuItem>
-);
 
-// Authenticated user dropdown component
-const AuthenticatedUserDropdown = ({
-  session,
-  isSigningOut,
-  onSignOut,
-}: {
-  session: UserSession;
-  isSigningOut: boolean;
-  onSignOut: () => void;
-}) => (
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Button
-        variant="outline"
-        size="icon"
-        aria-label="User menu"
-        className="relative"
-      >
-        <User className="h-4 w-4" aria-hidden="true" />
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="end" className="w-56">
-      <UserInfo user={session.user} />
-      <DropdownMenuSeparator />
-      <DropdownMenuItem asChild>
-        <Link
-          to="/account/$path"
-          params={{ path: "profile" }}
-          className="flex items-center cursor-pointer"
-        >
-          <User className="mr-2 h-4 w-4" aria-hidden="true" />
-          <span>Profile</span>
-        </Link>
-      </DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <SignOutButton isSigningOut={isSigningOut} onSignOut={onSignOut} />
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
-
-// Unauthenticated user login button component
-const UnauthenticatedUserButton = () => (
-  <Button variant="default" size="icon" asChild aria-label="Sign in">
-    <Link to="/auth/sign-in">
-      <LogIn className="h-4 w-4" aria-hidden="true" />
-    </Link>
-  </Button>
-);
 
 export function Header() {
   const { navigate } = useRouter();
@@ -164,7 +91,12 @@ export function Header() {
       )}
     >
       {/* Header Container  */}
-      <div className={cn("flex items-center justify-between gap-4 w-full", container())}>
+      <div
+        className={cn(
+          "flex items-center justify-between gap-4 w-full",
+          container()
+        )}
+      >
         <Button
           size="sm"
           variant="default"
@@ -181,13 +113,19 @@ export function Header() {
         <div className="flex items-center gap-2">
           <ModeToggle />
           {isAuthenticated ? (
-            <AuthenticatedUserDropdown
-              session={session!}
-              isSigningOut={isSigningOut}
-              onSignOut={signOut}
+            <UserButton
+              size={"default"}
+              className=" bg-secondary text-foreground hover:bg-secondary/80"
+              additionalLinks={[
+                { href: "/dashboard", icon: <Home />, label: "Dashboard" },
+              ]}
             />
           ) : (
-            <UnauthenticatedUserButton />
+  <Button variant="default" size="icon" asChild aria-label="Sign in">
+    <Link to="/auth/sign-in">
+      <LogIn className="h-4 w-4" aria-hidden="true" />
+    </Link>
+  </Button>
           )}
         </div>
       </div>

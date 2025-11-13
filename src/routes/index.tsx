@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 
+
 export const Route = createFileRoute("/")({ component: IndexPage });
 
 // Gradient colors for the bento grid
@@ -15,6 +16,7 @@ const gradientColors = [
 ];
 
 function IndexPage() {
+  
   return (
     <div className="h-full text-foreground">
       {/* Hero Section */}
