@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { Providers } from "@/components/providers";
 import appCss from "../styles.css?url";
 import { cn, container } from "@/lib/utils";
@@ -59,6 +60,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           ]}
         />
 
+        <Footer />
         <Scripts />
       </body>
     </html>

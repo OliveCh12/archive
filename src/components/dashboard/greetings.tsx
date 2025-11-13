@@ -215,7 +215,7 @@ export function Greetings() {
                 setActiveFilter(value);
               }
             }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2"
+            className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-5 gap-2 w-full"
             aria-label="Filtres des offres"
           >
             {FILTER_OPTIONS.map((filter) => {
@@ -224,7 +224,7 @@ export function Greetings() {
                 <ToggleGroupItem
                   key={filter.value}
                   value={filter.value}
-                  className="flex items-center gap-1.5 px-2 py-1.5 h-auto w-auto border justify-start text-xs"
+                  className="flex items-center gap-1.5 px-2 py-1.5 h-auto w-auto border justify-start text-xs cursor-pointer"
                 >
                   <Icon className="h-3 w-3" />
                   <span className="hidden lg:inline">{filter.label}</span>
