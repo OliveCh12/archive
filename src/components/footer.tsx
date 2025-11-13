@@ -13,8 +13,8 @@ export function Footer() {
         <div className="flex items-center gap-6">
           <div className="font-semibold text-foreground">Phoenix</div>
           <div className="flex items-center gap-4 text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-primary"></span>
               Development
             </span>
             <span>v1.0.0</span>
