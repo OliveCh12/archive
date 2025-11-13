@@ -13,7 +13,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "@tanstack/react-router";
 import { useState, useCallback, useMemo } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
+import { cn, container } from "@/lib/utils";
 
 // Types for better type safety
 interface UserSession {
@@ -38,14 +38,18 @@ const UserInfo = ({ user }: { user: UserSession["user"] }) => (
   <div className="px-2 py-1.5 text-sm font-medium">
     {user.name || user.email}
     <span className="text-xs text-muted-foreground">
-      {" "}({user.isAnonymous ? "Anonymous" : "User"})
+      {" "}
+      ({user.isAnonymous ? "Anonymous" : "User"})
     </span>
   </div>
 );
 
 // Extracted sign out button component
-const SignOutButton = ({ isSigningOut, onSignOut }: { 
-  isSigningOut: boolean; 
+const SignOutButton = ({
+  isSigningOut,
+  onSignOut,
+}: {
+  isSigningOut: boolean;
   onSignOut: () => void;
 }) => (
   <DropdownMenuItem
@@ -69,10 +73,10 @@ const SignOutButton = ({ isSigningOut, onSignOut }: {
 );
 
 // Authenticated user dropdown component
-const AuthenticatedUserDropdown = ({ 
-  session, 
-  isSigningOut, 
-  onSignOut 
+const AuthenticatedUserDropdown = ({
+  session,
+  isSigningOut,
+  onSignOut,
 }: {
   session: UserSession;
   isSigningOut: boolean;
@@ -110,12 +114,7 @@ const AuthenticatedUserDropdown = ({
 
 // Unauthenticated user login button component
 const UnauthenticatedUserButton = () => (
-  <Button
-    variant="default"
-    size="icon"
-    asChild
-    aria-label="Sign in"
-  >
+  <Button variant="default" size="icon" asChild aria-label="Sign in">
     <Link to="/auth/sign-in">
       <LogIn className="h-4 w-4" aria-hidden="true" />
     </Link>
@@ -130,7 +129,7 @@ export function Header() {
   // Memoize the sign out function to prevent unnecessary re-renders
   const signOut = useCallback(async () => {
     if (isSigningOut) return; // Prevent multiple simultaneous sign outs
-    
+
     setIsSigningOut(true);
     try {
       await authClient.signOut({
@@ -157,18 +156,19 @@ export function Header() {
   const isAuthenticated = useMemo(() => !!session?.user, [session?.user]);
 
   return (
-    <header 
+    <header
       className={cn(
-        "sticky top-0 flex items-center justify-between border-b bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/60 md:px-6",
+        " w-full sticky top-0 flex items-center justify-between border-b bg-card",
         HEADER_HEIGHT,
         HEADER_Z_INDEX
       )}
     >
-      <div className="flex items-center gap-4">
-        <Button 
-          size="sm" 
-          variant="outline" 
-          asChild 
+      {/* Header Container  */}
+      <div className={cn("flex items-center justify-between gap-4 w-full", container())}>
+        <Button
+          size="sm"
+          variant="default"
+          asChild
           className="font-semibold"
           aria-label="Go to homepage"
         >
@@ -177,19 +177,19 @@ export function Header() {
             <span className="hidden sm:inline">Phoenix</span>
           </Link>
         </Button>
-      </div>
 
-      <div className="flex items-center gap-2">
-        <ModeToggle />
-        {isAuthenticated ? (
-          <AuthenticatedUserDropdown 
-            session={session!} 
-            isSigningOut={isSigningOut}
-            onSignOut={signOut}
-          />
-        ) : (
-          <UnauthenticatedUserButton />
-        )}
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+          {isAuthenticated ? (
+            <AuthenticatedUserDropdown
+              session={session!}
+              isSigningOut={isSigningOut}
+              onSignOut={signOut}
+            />
+          ) : (
+            <UnauthenticatedUserButton />
+          )}
+        </div>
       </div>
     </header>
   );
