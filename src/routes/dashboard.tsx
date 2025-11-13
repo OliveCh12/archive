@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { OffresTable } from "@/components/offres/offres-table";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardRoute,
@@ -17,9 +18,10 @@ export const Route = createFileRoute("/dashboard")({
 function DashboardRoute() {
   return (
     <main className="h-full w-full">
-      <section className="flex h-full flex-col gap-6">
+      <section className="flex h-full flex-col gap-4">
         <Greetings />
-        <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+        <OffresTable />
+        <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
           <Card className="border-border shadow-sm">
             <CardHeader>
               <CardTitle>Quick actions</CardTitle>

@@ -19,3 +19,8 @@ interface Offres {
     id: number
     name: string
 }
+
+
+export function OffresTable() {
+    return <div>Offres Table</div>
+}
