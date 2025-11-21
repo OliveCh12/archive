@@ -7,6 +7,11 @@ import {
   Clock,
   MapPin,
   Timer,
+  User as UserIcon,
+  FileCheck,
+  ShieldCheck,
+  Shield,
+  type LucideIcon,
 } from "lucide-react";
 import { useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -25,8 +30,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { authClient } from "@/lib/auth-client";
 import { extractNameParts } from "@/lib/utils";
 
@@ -57,6 +69,15 @@ export const FILTER_OPTIONS = [
   { value: "pending", label: "Montages en attente de contrôle", icon: Timer },
 ];
 
+type UserRole = "User" | "Controller" | "Super Controller" | "Admin";
+
+const ROLE_ICONS: Record<UserRole, LucideIcon> = {
+  User: UserIcon,
+  Controller: FileCheck,
+  "Super Controller": ShieldCheck,
+  Admin: Shield,
+};
+
 interface GreetingsProps {
   activeFilter: string;
   onFilterChange: (value: string) => void;
@@ -76,6 +97,10 @@ export function Greetings({ activeFilter, onFilterChange }: GreetingsProps) {
   });
 
   const user = session?.user;
+
+  // TODO: Get real role from user session
+  const userRole: UserRole = "Controller";
+  const RoleIcon = ROLE_ICONS[userRole];
 
   const nameParts = useMemo(() => extractNameParts(user?.name), [user?.name]);
 
@@ -162,13 +187,21 @@ export function Greetings({ activeFilter, onFilterChange }: GreetingsProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Avatar className="h-8 w-8 shrink-0">
-            <AvatarImage src={user.image ?? undefined} alt={fullName} />
-            <AvatarFallback className="text-xs font-medium">
-              {firstName?.charAt(0)?.toUpperCase() ?? "U"}
-              {lastName?.charAt(0)?.toUpperCase() ?? ""}
-            </AvatarFallback>
-          </Avatar>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Avatar className="h-8 w-8 shrink-0 cursor-help border rounded-sm">
+                  <AvatarImage src={user.image ?? undefined} alt={fullName} />
+                  <AvatarFallback>
+                    <RoleIcon className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{userRole}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <div className="flex flex-col gap-0 min-w-0 flex-1">
             <CardTitle className="text-primary text-base leading-tight">
               {fullName}
@@ -177,9 +210,11 @@ export function Greetings({ activeFilter, onFilterChange }: GreetingsProps) {
               {user.email ?? "Adresse inconnue"}
             </CardDescription>
           </div>
-          <Button size="lg">
-            <Link to="/dashboard">Nouvelle Offre</Link>
-            <FilePlus />
+          <Button size="lg" asChild>
+            <Link to="/offres/create">
+              Nouvelle Offre
+              <FilePlus />
+            </Link>
           </Button>
         </div>
       </CardHeader>
@@ -194,7 +229,7 @@ export function Greetings({ activeFilter, onFilterChange }: GreetingsProps) {
                 onFilterChange(value);
               }
             }}
-            className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-5 gap-2 w-full"
+            className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-5 w-full"
             aria-label="Filtres des offres"
           >
             {FILTER_OPTIONS.map((filter) => {
@@ -203,12 +238,17 @@ export function Greetings({ activeFilter, onFilterChange }: GreetingsProps) {
                 <ToggleGroupItem
                   key={filter.value}
                   value={filter.value}
-                  className="flex items-center gap-1.5 px-2 py-1.5 h-auto w-auto border justify-start text-xs cursor-pointer"
+                  className="flex items-center gap-1.5 px-2 py-1.5 h-auto w-auto border justify-between text-xs cursor-pointer"
                 >
-                  <Icon className="h-3 w-3" />
-                  <span className="hidden lg:inline">{filter.label}</span>
-                  <span className="lg:hidden">
-                    {filter.label.split(" ")[0]}
+                  <div className="flex gap-2">
+                    <Icon className="h-3 w-3" />
+                    <span className="hidden lg:inline">{filter.label}</span>
+                    <span className="lg:hidden">
+                      {filter.label.split(" ")[0]}
+                    </span>
+                  </div>
+                  <span className="text-primary">
+                    0
                   </span>
                 </ToggleGroupItem>
               );
