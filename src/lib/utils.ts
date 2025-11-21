@@ -6,8 +6,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Container utility function for consistent max-width and padding
-export function container() {
-    return "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8";
+export function container(size: 'sm' | 'md' | 'lg' | 'xl' = 'lg') {
+  const sizes = {
+    sm: 'max-w-4xl',
+    md: 'max-w-5xl',
+    lg: 'max-w-7xl',
+    xl: 'max-w-screen-2xl',
+  } as const;
+
+  return `${sizes[size]} mx-auto px-4 sm:px-6 lg:px-8`;
 }
 
 export interface NameParts {

@@ -28,7 +28,7 @@ function CreateOfferRoute() {
     <>
       <RedirectToSignIn />
       <SignedIn>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Créer une offre</CardTitle>
@@ -60,7 +60,7 @@ function CreateOfferRoute() {
             </CardContent>
             <CardFooter className="flex justify-end gap-2">
               <Button variant="outline" asChild>
-                <Link to="/dashboard">Annuler</Link>
+                <Link to="/">Annuler</Link>
               </Button>
               <Button>Créer l'offre</Button>
             </CardFooter>
