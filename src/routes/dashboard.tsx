@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RedirectToSignIn, SignedIn } from "@daveyplate/better-auth-ui";
+import { useState } from "react";
 
-import { Greetings } from "@/components/dashboard/greetings";
+import { Greetings, FILTER_OPTIONS } from "@/components/dashboard/greetings";
+import { DashboardStats } from "@/components/dashboard/stats";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,15 +20,28 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardRoute() {
+  const [activeFilter, setActiveFilter] = useState<string>(
+    FILTER_OPTIONS[0].value
+  );
+
   return (
     <>
       <RedirectToSignIn />
       <SignedIn>
-        <div className="h-full w-full">
-          <section className="flex h-full flex-col gap-4">
-            <Greetings />
-            <OffresTable />
-            <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
+        <div className="h-full w-full space-y-4">
+          <Greetings
+            activeFilter={activeFilter}
+            onFilterChange={setActiveFilter}
+          />
+          
+          <DashboardStats />
+
+          <div className="grid gap-4 lg:grid-cols-3">
+            <div className="lg:col-span-2 space-y-4">
+              <OffresTable filter={activeFilter} />
+            </div>
+            
+            <div className="space-y-4">
               <Card className="border-border shadow-sm">
                 <CardHeader>
                   <CardTitle>Quick actions</CardTitle>
@@ -34,17 +49,17 @@ function DashboardRoute() {
                     Jump back into the work that needs your attention first.
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="grid gap-3 sm:grid-cols-2">
-                  <Button variant="default" className="justify-start">
+                <CardContent className="grid gap-3">
+                  <Button variant="default" className="justify-start w-full">
                     Create task
                   </Button>
-                  <Button variant="outline" className="justify-start">
+                  <Button variant="outline" className="justify-start w-full">
                     View teams
                   </Button>
-                  <Button variant="outline" className="justify-start">
+                  <Button variant="outline" className="justify-start w-full">
                     Alert settings
                   </Button>
-                  <Button variant="ghost" className="justify-start">
+                  <Button variant="ghost" className="justify-start w-full">
                     Open reports
                   </Button>
                 </CardContent>
@@ -75,7 +90,7 @@ function DashboardRoute() {
                 </CardContent>
               </Card>
             </div>
-          </section>
+          </div>
         </div>
       </SignedIn>
     </>

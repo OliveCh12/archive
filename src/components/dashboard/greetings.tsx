@@ -8,7 +8,7 @@ import {
   MapPin,
   Timer,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,30 +28,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { authClient } from "@/lib/auth-client";
-
-interface NameParts {
-  firstName: string | null;
-  lastName: string | null;
-}
-
-function extractNameParts(name?: string | null): NameParts {
-  if (!name) {
-    return { firstName: null, lastName: null };
-  }
-
-  const segments = name.trim().split(/\s+/).filter(Boolean);
-
-  if (segments.length === 0) {
-    return { firstName: null, lastName: null };
-  }
-
-  if (segments.length === 1) {
-    return { firstName: segments[0], lastName: null };
-  }
-
-  const [firstName, ...rest] = segments;
-  return { firstName: firstName ?? null, lastName: rest.join(" ") || null };
-}
+import { extractNameParts } from "@/lib/utils";
 
 async function fetchSession() {
   const { data, error } = await authClient.getSession();
@@ -68,7 +45,7 @@ async function fetchSession() {
   return data ?? null;
 }
 
-const FILTER_OPTIONS = [
+export const FILTER_OPTIONS = [
   { value: "latest", label: "Dernières offres", icon: Clock },
   {
     value: "valid",
@@ -80,10 +57,12 @@ const FILTER_OPTIONS = [
   { value: "pending", label: "Montages en attente de contrôle", icon: Timer },
 ];
 
-export function Greetings() {
-  const [activeFilter, setActiveFilter] = useState<string>(
-    FILTER_OPTIONS[0].value
-  );
+interface GreetingsProps {
+  activeFilter: string;
+  onFilterChange: (value: string) => void;
+}
+
+export function Greetings({ activeFilter, onFilterChange }: GreetingsProps) {
   const {
     data: session,
     isPending,
@@ -212,7 +191,7 @@ export function Greetings() {
             value={activeFilter}
             onValueChange={(value) => {
               if (value) {
-                setActiveFilter(value);
+                onFilterChange(value);
               }
             }}
             className="grid grid-cols-1 sm:grid-cols-5 lg:grid-cols-5 gap-2 w-full"
@@ -239,7 +218,7 @@ export function Greetings() {
 
         {/* Mobile: Select Dropdown */}
         <div className="md:hidden">
-          <Select value={activeFilter} onValueChange={setActiveFilter}>
+          <Select value={activeFilter} onValueChange={onFilterChange}>
             <SelectTrigger className="w-full h-8 text-xs">
               <SelectValue placeholder="Sélectionner un filtre" />
             </SelectTrigger>

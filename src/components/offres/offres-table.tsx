@@ -168,7 +168,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ]
 
-export function OffresTable() {
+export function OffresTable({ filter }: { filter?: string }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
